@@ -38,11 +38,10 @@ class AnswerSearcher:
 
 if __name__ == '__main__':
 
-    ques = "可以不参加暑期学校吗,暑期学校的成绩怎么认定"
+    ques = "学业奖学金的评审资格，发放时间"
     e, q, k = QuestionClassifier().classify(ques)
     cql=QuestionPaser().parser_main(e,q,k)
     ans=(AnswerSearcher().search_main(cql))
     res=AnswerSearcher().answer_prettify(k,ans)
     print(res)
-
 
