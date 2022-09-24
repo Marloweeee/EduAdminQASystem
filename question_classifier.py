@@ -8,7 +8,7 @@ class QuestionClassifier:
         # 实体节点询问特征词
         self.thesis_begin=['开题','论文要开题','毕设开题','开题报告','开始','开始写','写论文','开题答辩']# 开题
         self.thesis_mid=['中期','中期答辩','中期报告','中期审核','中期评审','中期检查']# 中期
-        self.thesis_end=['毕设答辩','最终答辩','毕业设计答辩']# 答辩
+        self.thesis_end=['答辩','毕设答辩','最终答辩','毕业设计答辩']# 答辩
         self.graduate=['毕业','盲审']# 毕业
         self.summer_school=['暑期课程','暑期学校','暑期选课','暑假课程','暑假学校','暑假选课']# 暑期学校
         self.course=['重修','不及格','退选','英语课','政治课','培养方案','先修课']# 课程
@@ -21,12 +21,28 @@ class QuestionClassifier:
 
         # 构建实体节点对应的属性特征疑问词
         # 1.开题+中期
-        self.thesis_time=['什么时间','什么时候','大概日期','大体日期','开题时间','提交时间','提交日期']# 询问时间
+        self.thesis_time=['什么时间','什么时候','日期','大体日期','开题时间','提交时间','提交日期']# 询问时间
         self.thesis_commit_way=['提交方式','怎么提交','如何提交','怎么去提交','怎样提交','怎样去提交']# 询问提交方式
         self.thesis_review=['如何评审','怎么评审','评审方式','怎样评审','怎么去评审','怎样去评审','评审小组','评审的方式','评审的流程','评审流程']# 评审方式
         self.thesis_title_change=['更换题目','变更题目','选题变更','选题更换','题目变更','换题','变更选题']# 换题
-        self.thesis_requirements=['提交要求','有什么要求','具体要求','提交的要求','提交标准','有什么标准','具体的要求','具体的标准']
+        self.thesis_requirements=['要求','提交要求','有什么要求','具体要求','提交的要求','提交标准','有什么标准','具体的要求','具体的标准']
         self.thesis_not_pass=['未通过','不通过','没有通过','失败','没通过']
+        # 2.答辩
+        self.defence_procedure=['流程','过程','步骤','流程环节','基本流程',]
+        self.defence_reviewer=['评审专家','审核人','评阅专家','审核专家','专家','专家学者']
+        self.defence_qualification=['资格','资质','参加答辩']
+        self.defence_online=['疫情','线上','云','无法返校']
+        self.defence_reviewer_qualification=['专家资格','专家要求','专家资质','专家需要什么资格',]
+        self.defence_committee=['委员会','评审小组','评审委员会']
+        self.defence_requirements=['要求','标准']
+        # 3.毕业
+        self.graduate_time=['时间','什么时候']
+        self.graduate_qulification=['资格','审查','资质','审核']
+        # 4.暑期学校
+        self.summer_school_necessity=['参与','参加','必要性']
+        self.summer_school_course=['选课','课程']
+        self.summer_school_score_affirm=['成绩','认定']
+
 
 
         # 构造actree,用于后续快速匹配输入问题中的关键词
@@ -87,7 +103,6 @@ class QuestionClassifier:
         final_wds = [i for i in region_wds if i not in stop_wds]
         final_dict = {i: self.wdtype_dict.get(i) for i in final_wds}
 
-        print("final_dict:{}".format(final_dict))
         return final_dict
 
     # 基于特征词进行分类
@@ -110,37 +125,77 @@ class QuestionClassifier:
         question_types=[]
 
 
-
+        '''开题+中期'''
         # 时间
-        if self.check_words(self.thesis_time, question):
+        if self.check_words(self.thesis_time, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_time'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('提交时间')
             question_types.append(question_type)
         # 提交方式
-        if self.check_words(self.thesis_commit_way, question):
+        if self.check_words(self.thesis_commit_way, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_commit_way'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('提交方式')
             question_types.append(question_type)
         # 评审小组
-        if self.check_words(self.thesis_review, question):
+        if self.check_words(self.thesis_review, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_review'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('评审')
             question_types.append(question_type)
         # 题目变更
-        if self.check_words(self.thesis_title_change, question):
+        if self.check_words(self.thesis_title_change, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_title_change'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('题目更改')
             question_types.append(question_type)
         # 要求
-        if self.check_words(self.thesis_requirements, question):
+        if self.check_words(self.thesis_requirements, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_requirements'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('要求')
             question_types.append(question_type)
         # 未通过
-        if self.check_words(self.thesis_not_pass, question):
+        if self.check_words(self.thesis_not_pass, question) and entity_key in ['开题','中期']:
             question_type = 'thesis_{}_not_pass'.format('begin' if entity_key=="开题" else 'mid')
             data[entity_key].append('未通过')
             question_types.append(question_type)
+
+        '''答辩'''
+        # 答辩流程
+        if self.check_words(self.defence_procedure, question) and entity_key=='答辩':
+            data[entity_key].append('答辩流程')
+        # 评审专家
+        if self.check_words(self.defence_reviewer, question) and entity_key=='答辩':
+            data[entity_key].append('评审专家')
+        # 答辩资格
+        if self.check_words(self.defence_qualification, question) and entity_key=='答辩':
+            data[entity_key].append('答辩资格')
+        # 在线答辩
+        if self.check_words(self.defence_online, question) and entity_key=='答辩':
+            data[entity_key].append('在线答辩')
+        # 评审资格
+        if self.check_words(self.defence_reviewer_qualification, question) and entity_key=='答辩':
+            data[entity_key].append('评审资格')
+        # 答辩委员会组成
+        if self.check_words(self.defence_committee, question) and entity_key=='答辩':
+            data[entity_key].append('答辩委员会组成')
+        # 答辩要求
+        if self.check_words(self.defence_requirements, question) and entity_key=='答辩':
+            data[entity_key].append('答辩要求')
+
+        '''毕业'''
+        # 盲审时间
+        if self.check_words(self.graduate_time, question) and entity_key=='毕业':
+            data[entity_key].append('盲审时间')
+        # 资格审查
+        if self.check_words(self.graduate_qulification, question) and entity_key=='毕业':
+            data[entity_key].append('资格审查')
+
+        '''暑期学校'''
+        if self.check_words(self.summer_school_necessity, question) and entity_key == '暑期学校':
+            data[entity_key].append('必要性')
+        if self.check_words(self.summer_school_course, question) and entity_key == '暑期学校':
+            data[entity_key].append('选课标准')
+        if self.check_words(self.summer_school_score_affirm, question) and entity_key == '暑期学校':
+            data[entity_key].append('成绩认定')
+
 
         data['question_types'] = question_types
         return data[entity_key],data['question_types'],entity_key
