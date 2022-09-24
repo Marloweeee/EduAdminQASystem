@@ -14,16 +14,35 @@ class AnswerSearcher:
 
     def search_main(self,cql):
 
-        anwser=[]
-        for query in cql:
-            res=self.graph.run(query).data()
-            anwser+=res
 
-        return anwser
+        res=self.graph.run(cql).data()
+
+        return res[0]
+    def answer_prettify(self,entity_key,answers):
+        if not answers:
+            return ''
+
+        attribute=list(answers.keys())
+        context=list(answers.values())
+        context_len=len(attribute)
+        ans=''
+
+        for idx in range(context_len):
+            ans+=("{}的{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx]))
+
+
+        return ans
+
+
+
 
 if __name__ == '__main__':
-    ques = "开题时间是什么时候，有什么要求"
+
+    ques = "可以不参加暑期学校吗,暑期学校的成绩怎么认定"
     e, q, k = QuestionClassifier().classify(ques)
     cql=QuestionPaser().parser_main(e,q,k)
     ans=(AnswerSearcher().search_main(cql))
+    res=AnswerSearcher().answer_prettify(k,ans)
+    print(res)
+
 
