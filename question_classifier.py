@@ -10,8 +10,8 @@ class QuestionClassifier:
         self.thesis_mid=['中期','中期答辩','中期报告','中期审核','中期评审','中期检查']# 中期
         self.thesis_end=['答辩','毕设答辩','最终答辩','毕业设计答辩']# 答辩
         self.graduate=['毕业','盲审']# 毕业
-        self.summer_school=['暑期课程','暑期学校','暑期选课','暑假课程','暑假学校','暑假选课']# 暑期学校
-        self.course=['重修','不及格','退选','英语课','政治课','培养方案','先修课']# 课程
+        self.summer_school=['暑期课程','暑期学校','暑期选课','暑假课程','暑假学校','暑假选课','暑期','暑假']# 暑期学校
+        self.course=['重修','不及格','退选','英语课','政治课','培养方案','先修课','课程']# 课程
         self.lesson=['教学云','教学云课程查询','教学云故障']# 上课、教学云
         self.nation_scholarship=['国家奖学金']# 国家奖学金
         self.academic_scholarship=['学业奖学金']# 学业奖学金
@@ -42,6 +42,29 @@ class QuestionClassifier:
         self.summer_school_necessity=['参与','参加','必要性']
         self.summer_school_course=['选课','课程']
         self.summer_school_score_affirm=['成绩','认定']
+        # 5.课程
+        self.course_pre=['本科阶段','先修课','本科课程','本科修的','本科']
+        self.course_sys_arrearage=['系统欠费','欠费','未交费','未缴费','没有交费','没有缴费']
+        self.course_political=['中国特色社会主义理论与实践研究','课程替代','政治课替代','政治课',]
+        self.course_english=['英语',]
+        self.course_report=['成绩单','成绩']
+        self.course_fail=['不及格','没及格','没有及格']
+        self.course_rebuild=['重修']
+        self.course_drop=['退选']
+        self.course_training_plan=['培养方案','培养计划','培养手册']
+        # 6.上课及教学云：上课
+        self.lesson_teaching_cloud=['登录','网址','方式','途径','上课']
+        self.lesson_research=['搜索','查看','课程']
+        self.lesson_problem=['故障','无法跳转','实名认证','无法正常']
+        self.lesson_feedback=['反馈','问题反馈']
+
+        # 7.奖学金
+        self.scholarship_review_org=['评选组织','机构']
+        self.scholarship_elect_condition=['评选条件','资格','资质']
+        self.scholarship_deny=['取消','否决']
+        self.scholarship_material=['材料','要求']
+        self.scholarship_quota_allocation=['名额','分配']
+        self.scholarship_time=['时间','时候','日期']
 
 
 
@@ -195,6 +218,51 @@ class QuestionClassifier:
             data[entity_key].append('选课标准')
         if self.check_words(self.summer_school_score_affirm, question) and entity_key == '暑期学校':
             data[entity_key].append('成绩认定')
+
+        '''课程'''
+        if self.check_words(self.course_pre, question) and entity_key == '课程':
+            data[entity_key].append('先修课')
+        if self.check_words(self.course_sys_arrearage, question) and entity_key == '课程':
+            data[entity_key].append('系统欠费')
+        if self.check_words(self.course_political, question) and entity_key == '课程':
+            data[entity_key].append('政治课')
+        if self.check_words(self.course_english, question) and entity_key == '课程':
+            data[entity_key].append('英语课')
+        if self.check_words(self.course_report, question) and entity_key == '课程':
+            data[entity_key].append('成绩单')
+        if self.check_words(self.course_fail, question) and entity_key == '课程':
+            data[entity_key].append('不及格')
+        if self.check_words(self.course_rebuild, question) and entity_key == '课程':
+            data[entity_key].append('课程重修')
+        if self.check_words(self.course_drop, question) and entity_key == '课程':
+            data[entity_key].append('课程退选')
+        if self.check_words(self.course_training_plan, question) and entity_key == '课程':
+            data[entity_key].append('培养方案')
+
+        '''教学云上课'''
+        if self.check_words(self.lesson_teaching_cloud, question) and entity_key == '上课':
+            data[entity_key].append('教学云')
+        if self.check_words(self.lesson_research, question) and entity_key == '上课':
+            data[entity_key].append('课程查询')
+        if self.check_words(self.lesson_problem, question) and entity_key == '上课':
+            data[entity_key].append('教学云故障')
+        if self.check_words(self.lesson_feedback, question) and entity_key == '上课':
+            data[entity_key].append('反馈途径')
+
+        '''奖学金'''
+        if self.check_words(self.scholarship_review_org, question) and entity_key in ['国家奖学金','学业奖学金']:
+            data[entity_key].append('评选机构')
+        if self.check_words(self.scholarship_elect_condition, question) and entity_key in ['国家奖学金', '学业奖学金']:
+            data[entity_key].append('参评条件')
+        if self.check_words(self.scholarship_deny, question) and entity_key in ['国家奖学金','学业奖学金']:
+            data[entity_key].append('取消资格')
+        if self.check_words(self.scholarship_material, question) and entity_key in ['国家奖学金','学业奖学金']:
+            data[entity_key].append('材料要求')
+        if self.check_words(self.scholarship_quota_allocation, question) and entity_key in ['国家奖学金','学业奖学金']:
+            data[entity_key].append('名额分配')
+        if self.check_words(self.scholarship_time, question) and entity_key in ['国家奖学金','学业奖学金']:
+            data[entity_key].append('发放时间')
+
 
 
         data['question_types'] = question_types
