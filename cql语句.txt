@@ -1,0 +1,43 @@
+1.开题中期
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/1-ThsisProposal.csv' AS row
+MERGE (n:论文答辩 {name:row.name,提交方式: row.commit_way,提交时间:row.time, 评审:row.review,题目更改:row.title_change,要求:row.requirements,未通过:row.not_pass})
+2.答辩
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/2-ThsisDefenses.csv' AS row
+MERGE (n:论文答辩 
+{name:row.name,答辩流程: row.proce,评审专家:row.reviewer,答辩资格:row.qualification,
+在线答辩:row.online,评审资格:row.reviewer_qualification,
+答辩委员会组成:row.committee,答辩要求:row.defense_requirements,
+论文要求:row.thesis_requirements})
+3.毕业
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/3-Graduate.csv' AS row
+MERGE(n:论文答辩{
+name:row.name,盲审时间:row.review_time,资格审查:row.credit_check
+}) 
+
+4.暑期课程
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/4-SummerSchool.csv' AS row
+MERGE(n:教学服务{
+name:row.name,必要性:row.necessity,选课标准:row.course,成绩认定:row.score_affirm}
+)
+5.选课
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/5-SelectLesson.csv' AS row
+MERGE(n:教学服务{
+name:row.name,先修课:row.pre_course,系统欠费:row.sys_arrearage,
+政治课:row.political,英语课:row.english,成绩单:row.school_report,
+不及格:row.course_fail,课程重修:row.course_rebuild,成绩重修:row.score_rebuild,
+课程退选:row.course_drop,培养方案:row.training_plan} 
+)
+
+6. 教学云相关问题
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/6-Lesson.csv' AS row
+MERGE(n:教学服务{
+name:row.name,教学云:row.teaching_cloud,课程查询:row.course_research,
+教学云故障:row.teaching_cloud_problem,反馈途径:row.feedback_approach}
+)
+7.奖学金
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/7-Scholarship.csv' AS row
+MERGE(n:先进个人{
+name:row.name,评选机构:row.review_organization,参评条件:row.elect_condition,
+取消资格:row.qualification_deny,材料要求:row.material_requirements,
+名额分配:row.quota_allocation,发放时间:row.time}
+)
