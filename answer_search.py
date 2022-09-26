@@ -18,6 +18,7 @@ class AnswerSearcher:
         res=self.graph.run(cql).data()
 
         return res[0]
+
     def answer_prettify(self,entity_key,answers):
         if not answers:
             return ''
@@ -28,7 +29,15 @@ class AnswerSearcher:
         ans=''
 
         for idx in range(context_len):
-            ans+=("{}的{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx]))
+            if entity_key in ['课程','上课']:
+                ans+="\033[1;31m 系统回复 \033[0m有关{}的信息如下：\n{}\n".format(attribute[idx].split('.')[1],context[idx])
+            elif entity_key in ['国家奖学金','学业奖学金'] :
+                if attribute[idx]=='取消资格':
+                    ans += "\033[1;31m 系统回复 \033[0m如有下列情况之一，{}的资格将被取消：\n{}\n".format(attribute[idx].split('.')[1],context[idx])
+                else:
+                    ans +="\033[1;31m 系统回复 \033[0m{}的{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx])
+            else:
+                ans+=("\033[1;31m 系统回复 \033[0m{}{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx]))
 
 
         return ans
@@ -37,11 +46,13 @@ class AnswerSearcher:
 
 
 if __name__ == '__main__':
+    print("\033[1;31m 欢迎使用智慧教务系统！\033[0m")
+    while 1:
 
-    ques = "学业奖学金的评审资格，发放时间"
-    e, q, k = QuestionClassifier().classify(ques)
-    cql=QuestionPaser().parser_main(e,q,k)
-    ans=(AnswerSearcher().search_main(cql))
-    res=AnswerSearcher().answer_prettify(k,ans)
-    print(res)
+        ques = input("用户：")
+        e, q, k = QuestionClassifier().classify(ques)
+        cql=QuestionPaser().parser_main(e,q,k)
+        ans=(AnswerSearcher().search_main(cql))
+        res=AnswerSearcher().answer_prettify(k,ans)
+        print(res)
 
