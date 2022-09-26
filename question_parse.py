@@ -16,7 +16,7 @@ class QuestionPaser:
         entity_dict,question_types,entity_key=e,q,k
 
 
-        if entity_key in ['开题','中期','答辩','毕业']:
+        if entity_key in ['开题报告','中期报告','答辩','毕业']:
             cql='MATCH (n:`论文答辩`) WHERE n.name="{}" RETURN {}'.format(entity_key,"n."+", n.".join(entity_dict))
         if entity_key in ['暑期学校','选课','上课']:
             cql='MATCH (n:`教学服务`) WHERE n.name="{}" RETURN {}'.format(entity_key,"n."+", n.".join(entity_dict))
