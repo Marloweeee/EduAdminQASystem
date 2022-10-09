@@ -6,8 +6,7 @@ LOAD CSV WITH HEADERS FROM 'file:///DataLoader/2-ThsisDefenses.csv' AS row
 MERGE (n:论文答辩 
 {name:row.name,流程: row.proce,评审专家:row.reviewer,资格:row.qualification,
 在线:row.online,评审资格:row.reviewer_qualification,
-委员会组成:row.committee,要求:row.defense_requirements,
-论文要求:row.thesis_requirements})
+委员会组成:row.committee,要求:row.defense_requirements})
 3.毕业
 LOAD CSV WITH HEADERS FROM 'file:///DataLoader/3-Graduate.csv' AS row
 MERGE(n:论文答辩{
