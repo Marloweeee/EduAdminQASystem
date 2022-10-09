@@ -14,7 +14,7 @@ class SimTokenVec:
 
     def __init__(self):
         # self.embedding_path = 'model/token_vector.bin'
-        self.embedding_path = 'model/word2vec.bin'
+        self.embedding_path = bin_path
         self.vec_size=vec_size
         self.model = gensim.models.KeyedVectors.load_word2vec_format(self.embedding_path, binary=False,limit=500)
 
