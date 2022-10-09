@@ -2,9 +2,9 @@
 
 
 vec_size=200
-epoch=5000
+epoch=10000
 
 QA_path='data/QA.csv'
 txt_path='data/data.txt'
 
-bin_path='model/word2vec_epoch500.bin'
+bin_path='model/word2vec_epoch10000.bin'
