@@ -2,6 +2,7 @@
 
 from py2neo import Graph
 from question_parse import *
+from sim_tokenvector import SimTokenVec
 
 class AnswerSearcher:
 
@@ -38,8 +39,6 @@ class AnswerSearcher:
                     ans +="\033[1;31m 系统回复 \033[0m{}的{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx])
             else:
                 ans+=("\033[1;31m 系统回复 \033[0m{}{}是：\n{}\n".format(entity_key,attribute[idx].split('.')[1],context[idx]))
-
-
         return ans
 
 
@@ -48,11 +47,17 @@ class AnswerSearcher:
 if __name__ == '__main__':
     print("\033[1;31m 欢迎使用智慧教务系统！\033[0m")
     while 1:
-
         ques = input("用户：")
-        e, q, k = QuestionClassifier().classify(ques)
-        cql=QuestionPaser().parser_main(e,q,k)
-        ans=(AnswerSearcher().search_main(cql))
-        res=AnswerSearcher().answer_prettify(k,ans)
-        print(res)
+        try:
+            e, q, k = QuestionClassifier().classify(ques)
+            cql=QuestionPaser().parser_main(e,q,k)
+            ans=(AnswerSearcher().search_main(cql))
+            res=AnswerSearcher().answer_prettify(k,ans)
+            if not res:
+                res=SimTokenVec().query(ques)
+            print(res)
+        except :
+            ans='\033[1;31m 系统回复 \033[0m'+SimTokenVec().query(ques)
+            print(ans)
+
 

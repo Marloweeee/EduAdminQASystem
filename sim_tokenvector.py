@@ -47,30 +47,37 @@ class SimTokenVec:
         word_list2 = [word for word in text2]
         return self.similarity_cosine(word_list1, word_list2)
 
-def query(text: str):
-    import time
-    start_time=time.time()
-    questions_list,answers_list = [],[]
-    data = pd.read_csv(QA_path)
-    for idx in range(len(data)):
-        Q, A = (data.iloc[idx].values.tolist())[:]
-        questions_list.append(Q)
-        answers_list.append(A)
+    def read_data(self,path):
+        questions_list, answers_list = [], []
+        data = pd.read_csv(path)
+        for idx in range(len(data)):
+            Q, A = (data.iloc[idx].values.tolist())[:]
+            questions_list.append(Q)
+            answers_list.append(A)
+        return questions_list,answers_list
 
-    sim = []
-    for i in range(len(questions_list)):
-        pre_matched_text = (" ".join(questions_list[i]))
-        simer = SimTokenVec()
-        sim.append(simer.distance(text, pre_matched_text))
+    def get_max_idx(self,text,q_list):
+        sim = []
+        for i in range(len(q_list)):
+            pre_matched_text = (" ".join(q_list[i]))
+            simer = SimTokenVec()
+            sim.append(simer.distance(text, pre_matched_text))
 
-    max_of_sim = max(sim)
-    print(max_of_sim)
-    index_of_max_of_sim = sim.index(max_of_sim)
-    end_time=time.time()
-    print("运行时间：{}".format(end_time-start_time))
-    print("Q:", questions_list[index_of_max_of_sim])
-    print("A", answers_list[index_of_max_of_sim])
+        max_of_sim = max(sim)
+        idx = sim.index(max_of_sim)
 
-while 1:
-    text1 = input('enter sent1:').strip()
-    query(text1)
+        return idx
+
+
+    def query(self,text: str):
+
+        questions_list,answers_list = self.read_data(QA_path)
+        idx = self.get_max_idx(text,questions_list)
+        return answers_list[idx]
+
+
+if __name__ == '__main__':
+
+    while 1:
+        text1 = input('enter sent1:').strip()
+        print(SimTokenVec().query(text1))
