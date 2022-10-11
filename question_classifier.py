@@ -138,7 +138,9 @@ class QuestionClassifier:
 
 
         edu_admin_dict=self.check_question_type(question)
-        if not edu_admin_dict:return {}
+        if not edu_admin_dict:
+            return {}
+
         entity_key = list(edu_admin_dict.values())[0][0]# 实体节点
 
         # 收集问句中的实体节点属性及对应的问题类型
@@ -213,16 +215,16 @@ class QuestionClassifier:
             data[entity_key].append('成绩认定')
 
         '''课程'''
-        if self.check_words(self.course_pre, question) and entity_key == '课程':
-            data[entity_key].append('先修课')
+        # if self.check_words(self.course_pre, question) and entity_key == '课程':
+        #     data[entity_key].append('先修课')
         if self.check_words(self.course_sys_arrearage, question) and entity_key == '课程':
             data[entity_key].append('系统欠费')
-        if self.check_words(self.course_political, question) and entity_key == '课程':
-            data[entity_key].append('政治课')
-        if self.check_words(self.course_english, question) and entity_key == '课程':
-            data[entity_key].append('英语课')
-        if self.check_words(self.course_report, question) and entity_key == '课程':
-            data[entity_key].append('成绩单')
+        # if self.check_words(self.course_political, question) and entity_key == '课程':
+        #     data[entity_key].append('政治课')
+        # if self.check_words(self.course_english, question) and entity_key == '课程':
+        #     data[entity_key].append('英语课')
+        # if self.check_words(self.course_report, question) and entity_key == '课程':
+        #     data[entity_key].append('成绩单')
         if self.check_words(self.course_fail, question) and entity_key == '课程':
             data[entity_key].append('不及格')
         if self.check_words(self.course_rebuild, question) and entity_key == '课程':

@@ -66,14 +66,14 @@ class SimTokenVec:
         max_of_sim = max(sim)
         idx = sim.index(max_of_sim)
 
-        return idx
+        return idx,max_of_sim
 
 
     def query(self,text: str):
 
         questions_list,answers_list = self.read_data(QA_path)
-        idx = self.get_max_idx(text,questions_list)
-        return answers_list[idx]
+        idx,sim_score = self.get_max_idx(text,questions_list)
+        return answers_list[idx],sim_score
 
 
 if __name__ == '__main__':
