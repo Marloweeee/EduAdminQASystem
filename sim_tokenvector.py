@@ -56,28 +56,50 @@ class SimTokenVec:
             answers_list.append(A)
         return questions_list,answers_list
 
-    def get_max_idx(self,text,q_list):
+    def similarity_cosine(self, vector, text):  # 基于余弦相似度的相似度计算
+
+        vector1 = np.array(vector)
+        word_list = [word for word in text]
+        vector2 = self.get_vector(word_list, self.vec_size)
+        cos1 = np.sum(vector1 * vector2)
+        cos21, cos22 = np.sqrt(sum(vector1 ** 2)), np.sqrt(sum(vector2 ** 2))
+        similarity = cos1 / float(cos21 * cos22)
+        return similarity
+
+
+    def get_max_idx(self,text,q_list,v_list):
+
         sim = []
+        simer = SimTokenVec()
         for i in range(len(q_list)):
-            pre_matched_text = (" ".join(q_list[i]))
-            simer = SimTokenVec()
-            sim.append(simer.distance(text, pre_matched_text))
+            sim.append(simer.similarity_cosine(vector=v_list[i], text=text))
+        max_of_sim_score = max(sim)
+        idx = sim.index(max_of_sim_score)
 
-        max_of_sim = max(sim)
-        idx = sim.index(max_of_sim)
+        return idx,max_of_sim_score
 
-        return idx,max_of_sim
+    def query(self,text: str, vec_list: list, questions_list: list, answers_list: list):
+
+        idx, sim_score = self.get_max_idx(text, questions_list,vec_list)
+        return answers_list[idx], sim_score
 
 
-    def query(self,text: str):
 
-        questions_list,answers_list = self.read_data(QA_path)
-        idx,sim_score = self.get_max_idx(text,questions_list)
-        return answers_list[idx],sim_score
 
 
 if __name__ == '__main__':
 
+    q_list, a_list, v_list = [], [], []
+    df = pd.read_csv('data/QA.csv')
+
+    for idx in range(len(df)):
+        Q, A = (df.iloc[idx].values.tolist())[:]
+        q_list.append(Q)
+        a_list.append(A)
+
+    for i in q_list:
+        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=50))
+
     while 1:
         text1 = input('enter sent1:').strip()
-        print(SimTokenVec().query(text1))
+        print(SimTokenVec().query(text1,v_list,q_list,a_list))
