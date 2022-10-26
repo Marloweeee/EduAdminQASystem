@@ -41,3 +41,17 @@ name:row.name,评选机构:row.review_organization,参评条件:row.elect_condit
 取消资格:row.qualification_deny,材料要求:row.material_requirements,
 名额分配:row.quota_allocation,发放时间:row.time}
 )
+
+8.出国
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/newGenerNode/1.csv' AS row
+MERGE(n:出国{
+name:row.name,条件:row.条件,交流项目:row.交流项目,
+适用人群:row.适用人群,会议费用标准:row.会议费用标准,
+博士标准:row.博士标准,数量:row.数量,次数:row.次数,
+国家公派:row.国家公派,取消资格:row.取消资格,申请:row.申请,审批:row.审批}
+)
+
+# 删除节点
+MATCH (r)
+WHERE r.name = '出国'
+DELETE r
