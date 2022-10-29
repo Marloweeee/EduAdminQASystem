@@ -19,7 +19,8 @@ class QuestionClassifier:
         self.competition=['竞赛','比赛']# 竞赛
         self.advanced_class=['先进班集体','先进班级','先进集体']# 先进班集体
         self.region_words=set(self.thesis_begin+self.thesis_mid+self.thesis_end+self.graduate+self.summer_school+
-                              self.course+self.lesson+self.nation_scholarship+self.academic_scholarship)
+                              self.course+self.lesson+self.nation_scholarship+self.academic_scholarship+
+                              self.go_abroad+self.dual_culture+self.competition+self.advanced_class)
 
 
         # 构建实体节点对应的属性特征疑问词
@@ -96,10 +97,16 @@ class QuestionClassifier:
         self.competition_condition=['条件','资格','资质']
         self.competition_funding=['资助','经费','支持']
         self.competition_funding_principle=['多次','原则']
-        self.competition_credit=['学分','奖励']
+        self.competition_credit=['学分','奖励','激励']
         self.competition_student=['招生名额奖励']
 
         # 11.先进班集体
+        self.ad_class_principle=['原则']
+        self.ad_class_object=['对象','目标']
+        self.ad_class_proportion=['比例','百分比']
+        self.ad_class_condition=['资格','资质','条件']
+        self.ad_class_procedure=['流程','程序','过程']
+        self.ad_class_incentive=['奖励','激励','表彰']
 
 
 
@@ -139,7 +146,14 @@ class QuestionClassifier:
                 wd_dict[wd].append('国家奖学金')
             elif wd in self.academic_scholarship:
                 wd_dict[wd].append('学业奖学金')
-
+            elif wd in self.go_abroad:
+                wd_dict[wd].append('出国')
+            elif wd in self.dual_culture:
+                wd_dict[wd].append('联合培养')
+            elif wd in self.competition:
+                wd_dict[wd].append('竞赛')
+            elif wd in self.advanced_class:
+                wd_dict[wd].append('先进班集体')
         return wd_dict
 
     def check_question_type(self, question):
@@ -294,6 +308,75 @@ class QuestionClassifier:
         if self.check_words(self.scholarship_time, question) and entity_key in ['国家奖学金','学业奖学金']:
             data[entity_key].append('发放时间')
 
+        '''出国'''
+        if self.check_words(self.abroad_condition,question) and entity_key=='出国':
+            data[entity_key].append('条件')
+        if self.check_words(self.abroad_proj,question) and entity_key=='出国':
+            data[entity_key].append('交流项目')
+        if self.check_words(self.abroad_people,question) and entity_key=='出国':
+            data[entity_key].append('适用人群')
+        if self.check_words(self.abroad_fee,question) and entity_key=='出国':
+            data[entity_key].append('会议费用标准')
+        if self.check_words(self.abroad_amount, question) and entity_key == '出国':
+            data[entity_key].append('数量')
+        if self.check_words(self.abroad_times,question) and entity_key=='出国':
+            data[entity_key].append('次数')
+        if self.check_words(self.abroad_application,question) and entity_key=='出国':
+            data[entity_key].append('申请')
+        if self.check_words(self.abroad_approval,question) and entity_key=='出国':
+            data[entity_key].append('审批')
+
+        '''联合培养'''
+        if self.check_words(self.culture_establish,question) and entity_key=='联合培养':
+            data[entity_key].append('建立途径')
+        if self.check_words(self.culture_condition,question) and entity_key=='联合培养':
+            data[entity_key].append('单位条件')
+        if self.check_words(self.culture_procedure,question) and entity_key=='联合培养':
+            data[entity_key].append('建立程序')
+        if self.check_words(self.culture_admin,question) and entity_key=='联合培养':
+            data[entity_key].append('管理模式')
+        if self.check_words(self.culture_select,question) and entity_key=='联合培养':
+            data[entity_key].append('选派方案')
+        if self.check_words(self.culture_outside_professor,question) and entity_key=='联合培养':
+            data[entity_key].append('校外导师')
+        if self.check_words(self.culture_regulation,question) and entity_key=='联合培养':
+            data[entity_key].append('规章制度')
+        if self.check_words(self.culture_assess,question) and entity_key=='联合培养':
+            data[entity_key].append('考核')
+
+        '''竞赛'''
+        if self.check_words(self.competition_level,question) and entity_key=='竞赛':
+            data[entity_key].append('竞赛等级')
+        if self.check_words(self.competition_contents, question) and entity_key == '竞赛':
+            data[entity_key].append('竞赛目录')
+        if self.check_words(self.competition_admin,question) and entity_key=='竞赛':
+            data[entity_key].append('管理')
+        if self.check_words(self.competition_condition,question) and entity_key=='竞赛':
+            data[entity_key].append('参赛条件')
+        if self.check_words(self.competition_funding,question) and entity_key=='竞赛':
+            data[entity_key].append('参赛资助')
+        if self.check_words(self.competition_funding_principle,question) and entity_key=='竞赛':
+            data[entity_key].append('资金奖励原则')
+        if self.check_words(self.competition_credit,question) and entity_key=='竞赛':
+            data[entity_key].append('学分奖励')
+        if self.check_words(self.competition_student,question) and entity_key=='竞赛':
+            data[entity_key].append('招生名额奖励')
+
+        '''先进班集体'''
+        if self.check_words(self.ad_class_principle,question) and entity_key=='先进班集体':
+            data[entity_key].append('原则')
+        if self.check_words(self.ad_class_object,question) and entity_key=='先进班集体':
+            data[entity_key].append('对象')
+        if self.check_words(self.ad_class_proportion,question) and entity_key=='先进班集体':
+            data[entity_key].append('比例')
+        if self.check_words(self.ad_class_condition,question) and entity_key=='先进班集体':
+            data[entity_key].append('评选条件')
+        if self.check_words(self.ad_class_procedure,question) and entity_key=='先进班集体':
+            data[entity_key].append('评选程序')
+        if self.check_words(self.ad_class_incentive,question) and entity_key=='先进班集体':
+            data[entity_key].append('表彰办法')
+
+
 
 
         data['question_types'] = question_types
@@ -304,7 +387,7 @@ class QuestionClassifier:
 if __name__ == '__main__':
     print("region_words",QuestionClassifier().region_words)
     print("wdtype_dict",QuestionClassifier().build_wdtype_dict())
-    print(QuestionClassifier().classify('中期报告提交时间'))
+    print(QuestionClassifier().classify('申请出国的方式'))
 
 
 
