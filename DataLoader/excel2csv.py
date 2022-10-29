@@ -19,7 +19,7 @@ for idx in range(14):
     data.columns=data_col_name
     data.to_csv(os.path.join(new_path,'{}.csv'.format(idx+1)),sep=',',encoding='utf-8',index=None)
 
-    merge_sentence = "LOAD CSV WITH HEADERS FROM 'file:///DataLoader/newGenerNode/{}.csv' AS row MERGE(n:{}" .format(idx+1,data_col_name[0])
+    merge_sentence = "LOAD CSV WITH HEADERS FROM 'file:///DataLoader/newGenerNode/{}.csv' AS row MERGE (n:{}{}name:row.name" .format(idx+1,data.iloc[0][0],'{')
     for name in data_col_name[1:]:
         merge_sentence+=',{}:row.{}'.format(name,name)
     merge_sentence+='})'

@@ -50,6 +50,14 @@ name:row.name,条件:row.条件,交流项目:row.交流项目,
 博士标准:row.博士标准,数量:row.数量,次数:row.次数,
 国家公派:row.国家公派,取消资格:row.取消资格,申请:row.申请,审批:row.审批}
 )
+9.联合培养
+LOAD CSV WITH HEADERS FROM 'file:///DataLoader/newGenerNode/2.csv' AS row
+MERGE(n:联合培养{
+name:row.name,建立途径:row.建立途径,单位条件:row.单位条件,建立程序:row.建立程序,
+管理模式:row.管理模式,选派方案:row.选派方案,校外导师:row.校外导师,规章制度:row.规章制度,考核:row.考核}
+)
+10.竞赛
+
 
 # 删除节点
 MATCH (r)

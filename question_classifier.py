@@ -14,6 +14,10 @@ class QuestionClassifier:
         self.lesson=['教学云','教学云课程查询','教学云故障']# 上课、教学云
         self.nation_scholarship=['国家奖学金']# 国家奖学金
         self.academic_scholarship=['学业奖学金']# 学业奖学金
+        self.go_abroad=['出国','留学','国外']# 出国
+        self.dual_culture=['联合培养','联培']# 联合培养
+        self.competition=['竞赛','比赛']# 竞赛
+        self.advanced_class=['先进班集体','先进班级','先进集体']# 先进班集体
         self.region_words=set(self.thesis_begin+self.thesis_mid+self.thesis_end+self.graduate+self.summer_school+
                               self.course+self.lesson+self.nation_scholarship+self.academic_scholarship)
 
@@ -64,6 +68,38 @@ class QuestionClassifier:
         self.scholarship_material=['材料','提交']
         self.scholarship_quota_allocation=['名额','分配']
         self.scholarship_time=['时间','时候','日期']
+
+        # 8.出国
+        self.abroad_condition=['条件','资格','资质']
+        self.abroad_proj=['项目']#
+        self.abroad_people=['适用人群']
+        self.abroad_fee=['费用','花销','花费']
+        self.abroad_amount=['数目','数量','多少个']
+        self.abroad_times=['次数','多少次']
+        self.abroad_application=['申请']
+        self.abroad_approval=['审批','批准']
+
+        # 9.联合培养
+        self.culture_establish=['打造','建造','建立']
+        self.culture_condition=['条件','资格','资质']
+        self.culture_procedure=['流程','过程','程序']
+        self.culture_admin=['管理',]
+        self.culture_select=['选派方案','挑选']
+        self.culture_outside_professor=['校外导师','企业导师','联培导师']
+        self.culture_regulation=['规章','制度']
+        self.culture_assess=['考核']
+
+        # 10.竞赛
+        self.competition_level=['级别','等级','评级','划分']
+        self.competition_contents=['名单','目录','清单']
+        self.competition_admin=['管理','协调','组织']
+        self.competition_condition=['条件','资格','资质']
+        self.competition_funding=['资助','经费','支持']
+        self.competition_funding_principle=['多次','原则']
+        self.competition_credit=['学分','奖励']
+        self.competition_student=['招生名额奖励']
+
+        # 11.先进班集体
 
 
 
