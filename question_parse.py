@@ -22,6 +22,8 @@ class QuestionPaser:
             cql='MATCH (n:`教学服务`) WHERE n.name="{}" RETURN {}'.format(entity_key,"n."+", n.".join(entity_dict))
         if entity_key in ['国家奖学金','学业奖学金']:
             cql='MATCH (n:`先进个人`) WHERE n.name="{}" RETURN {}'.format(entity_key,"n."+", n.".join(entity_dict))
+        if entity_key in['出国','联合培养','竞赛','先进班集体']:
+            cql = 'MATCH (n:`{}`) WHERE n.name="{}" RETURN {}'.format(entity_key,entity_key, "n." + ", n.".join(entity_dict))
 
         return cql
 

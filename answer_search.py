@@ -1,5 +1,5 @@
 # coding=utf-8
-
+import pandas as pd
 from py2neo import Graph
 from question_parse import *
 from sim_tokenvector import SimTokenVec
@@ -17,6 +17,7 @@ class AnswerSearcher:
 
 
         res=self.graph.run(cql).data()
+        print(res)
 
         return res[0]
 
@@ -45,11 +46,26 @@ class AnswerSearcher:
 
 
 if __name__ == '__main__':
+
+
+    q_list, a_list, v_list = [], [], []
+    df = pd.read_csv('data/QA.csv')
+
+    for idx in range(len(df)):
+        Q, A = (df.iloc[idx].values.tolist())[:]
+        q_list.append(Q)
+        a_list.append(A)
+
+    for i in q_list:
+        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=50))
     print("\033[1;31m 欢迎使用智慧教务系统！\033[0m")
+
+
     while 1:
         ques,res = input("用户："),"您的问题我们还要再向相关部门请教呢，请您过两天再来试试吧"
         try:
-            ans, sim_score = SimTokenVec().query(ques)
+            ans, sim_score = SimTokenVec().query(ques,v_list,q_list,a_list)
+            print(sim_score)
             if sim_score >= 0.7:
                 res = '\033[1;31m 系统回复 \033[0m' + ans
             else:
@@ -62,5 +78,12 @@ if __name__ == '__main__':
             print(res)
         except:
             print(res)
+    # ques=input('请输入问题：')
+    # e, q, k = QuestionClassifier().classify(ques)
+    # cql = QuestionPaser().parser_main(e, q, k)
+    # ans = (AnswerSearcher().search_main(cql))
+    # res = AnswerSearcher().answer_prettify(k, ans)
+    # print(res)
+
 
 
