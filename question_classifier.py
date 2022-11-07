@@ -71,9 +71,9 @@ class QuestionClassifier:
         self.scholarship_time=['时间','时候','日期']
 
         # 8.出国
-        self.abroad_condition=['条件','资格','资质']
+        self.abroad_condition=['条件','资格','资质','要求']
         self.abroad_proj=['项目']#
-        self.abroad_people=['适用人群']
+        self.abroad_people=['适用人群','哪类人','那类人','什么人']
         self.abroad_fee=['费用','花销','花费']
         self.abroad_amount=['数目','数量','多少个']
         self.abroad_times=['次数','多少次']
@@ -91,7 +91,7 @@ class QuestionClassifier:
         self.culture_assess=['考核']
 
         # 10.竞赛
-        self.competition_level=['级别','等级','评级','划分']
+        self.competition_level=['级别','等级','评级','划分','分级']
         self.competition_contents=['名单','目录','清单']
         self.competition_admin=['管理','协调','组织']
         self.competition_condition=['条件','资格','资质']

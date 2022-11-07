@@ -1,4 +1,5 @@
 # coding=utf-8
+from cfg import *
 import pandas as pd
 from py2neo import Graph
 from question_parse import *
@@ -37,9 +38,9 @@ class AnswerSearcher:
                 if attribute[idx]=='取消资格':
                     ans += "\033[1;31m 系统回复 \033[0m如有下列情况之一，{}的资格将被取消：\n{}".format(attribute[idx].split('.')[1],context[idx])
                 else:
-                    ans +="\033[1;31m 系统回复 \033[0m{}的{}是：\n{}".format(entity_key,attribute[idx].split('.')[1],context[idx])
+                    ans +="\033[1;31m 系统回复 \033[0m：\n{}".format(context[idx])
             else:
-                ans+=("\033[1;31m 系统回复 \033[0m{}{}是：\n{}".format(entity_key,attribute[idx].split('.')[1],context[idx]))
+                ans+=("\033[1;31m 系统回复 \033[0m：\n{}".format(context[idx]))
         return ans
 
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
         a_list.append(A)
 
     for i in q_list:
-        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=50))
+        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=vec_size))
     print("\033[1;31m 欢迎使用智慧教务系统！\033[0m")
 
 

@@ -98,7 +98,7 @@ if __name__ == '__main__':
         a_list.append(A)
 
     for i in q_list:
-        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=50))
+        v_list.append(SimTokenVec().get_vector(word_list=i, vec_size=vec_size))
 
     while 1:
         text1 = input('enter sent1:').strip()
